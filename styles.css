@@ -5,9 +5,20 @@ html, body {
     text-align: center;
 }
 
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #canvas-car {
     width: 300px;
     padding: 0;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     background-color: gainsboro;
+}
+
+#canvas-visualizer {
+    width: 300px;
+    /* background-color: black; */
 }

@@ -1,6 +1,6 @@
 class Car {
 
-    constructor(x, y, width, height, isControllable, maxspeed = 3.5) 
+    constructor(x, y, width, height, isControllable, maxspeed = 0.5) 
     {
         this.x = x;
         this.y = y;
@@ -18,7 +18,7 @@ class Car {
 
         if(isControllable) {
             this.detector = new Detector(this);
-            this.network = new NeuralNetwork([this.detector.ray.count, 4, 4]);
+            this.network = new NeuralNetwork([this.detector.ray.count, 5, 5, 4]);
         }
     }
 
