@@ -15,6 +15,27 @@ class NeuralNetwork {
         }
         return outputs;
     }
+
+    static mutate(network,amount){
+        network.layers.forEach(level => {
+            for(let i=0;i<level.biases.length;i++){
+                level.biases[i]=lerp(
+                    level.biases[i],
+                    Math.random()*2-1,
+                    amount
+                )
+            }
+            for(let i=0;i<level.weights.length;i++){
+                for(let j=0;j<level.weights[i].length;j++){
+                    level.weights[i][j]=lerp(
+                        level.weights[i][j],
+                        Math.random()*2-1,
+                        amount
+                    )
+                }
+            }
+        });
+    }
 }
 
 
@@ -24,8 +45,8 @@ class Layer {
         this.outputs = new Array(outputNo);
         this.biases = new Array(outputNo);
 
-        this.weights = new Array(inputNo);
-        for(let i=0; i<this.weights.length; i++) {
+        this.weights = [];
+        for(let i=0; i<inputNo; i++) {
             this.weights[i] = new Array(outputNo);
         }
 
@@ -33,8 +54,8 @@ class Layer {
     }
 
     static #generateRandom(layer) {
-        for(let i=0; i<layer.weights.length; i++) {
-            for(let j=0; j<layer.weights[i].length; j++) {
+        for(let i=0; i<layer.inputs.length; i++) {
+            for(let j=0; j<layer.outputs.length; j++) {
                 layer.weights[i][j] = Math.random()*2 -1;
             }
         }
@@ -45,7 +66,7 @@ class Layer {
     }
     static feedForward(inputs, layer) {
         // copy the inputs
-        for(let i=0; i<inputs.length; i++) {
+        for(let i=0; i<layer.inputs.length; i++) {
             layer.inputs[i] = inputs[i];
         }
 
@@ -53,10 +74,10 @@ class Layer {
         for(let i=0; i<layer.outputs.length; i++) {
             let score = 0;
             for(let j=0; j<layer.inputs.length; j++) {
-                score += layer.inputs[j]*layer.weights[j][i] + layer.biases[i];
+                score += layer.inputs[j]*layer.weights[j][i];
             }
 
-            if(score>0)
+            if(score>layer.biases[i])
                 layer.outputs[i] = 1;
             else 
                 layer.outputs[i] = 0;

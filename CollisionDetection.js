@@ -4,7 +4,7 @@ class Detector {
         this.ray = {
             count: 5,
             spread: Math.PI/2,
-            length: 120
+            length: 250
         };
         this.rays = [];
         this.intersectionPoints = [];
@@ -21,20 +21,22 @@ class Detector {
         }
 
         // get intersection points with ray and road
-        this.rays.forEach((ray) => {
-            let result = this.#getRayIntersection(ray, roadBorders, otherCars);
+        this.intersectionPoints = [];
+        for(let i=0; i<this.rays.length; i++) {
+            let result = this.#getRayIntersection(this.rays[i], roadBorders, otherCars);
             // console.log(result);
-            this.rays.push(result);
-        });
-
+            this.intersectionPoints.push(result);
+        }
     }
 
     drawSensors(context) {
+        // console.log(this.intersectionPoints);    
         for(let i=0; i<this.ray.count; i++) {
             let end = this.rays[i][1];
             if(this.intersectionPoints[i]!=null) {
                 end = this.intersectionPoints[i];
             }
+
             context.beginPath();
             context.strokeStyle = "red";
             context.setLineDash([]);
@@ -43,14 +45,12 @@ class Detector {
             context.lineTo(end.x, end.y);
             context.stroke();
 
-            // context.beginPath();
-            // context.strokeStyle = "black";
-            // context.setLineDash([]);
-            // context.lineWidth = 1;
-            // context.moveTo(end.x, end.y);
-            // context.lineTo(this.rays[i][1].x, this.rays[i][1].y);
-            // context.stroke();
-
+            context.beginPath();
+            context.strokeStyle = "black";
+            context.lineWidth = 1;
+            context.moveTo(this.rays[i][1].x, this.rays[i][1].y);
+            context.lineTo(end.x, end.y);
+            context.stroke();
         }
     }
 
@@ -77,6 +77,7 @@ class Detector {
                 );
                 if(value) {
                     points.push(value);
+                // console.log(value);
                 }
             }
         });
@@ -84,11 +85,9 @@ class Detector {
             return null;
         }
         else {
-            let minOffset = 2;
-            points.forEach((el) => {
-                minOffset = Math.min(minOffset, el.offset);
-            });
-            return points.find(el => el.offset == minOffset);
+            const offsets=points.map(e=>e.offset);
+            const minOffset=Math.min(...offsets);
+            return points.find(e=>e.offset==minOffset);
         }
 
         

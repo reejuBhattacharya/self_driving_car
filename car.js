@@ -1,6 +1,6 @@
 class Car {
 
-    constructor(x, y, width, height, isControllable, maxspeed = 0.5) 
+    constructor(x, y, width, height, isControllable, maxspeed = 1.5) 
     {
         this.x = x;
         this.y = y;
@@ -18,11 +18,11 @@ class Car {
 
         if(isControllable) {
             this.detector = new Detector(this);
-            this.network = new NeuralNetwork([this.detector.ray.count, 5, 5, 4]);
+            this.network = new NeuralNetwork([this.detector.ray.count, 6, 4]);
         }
     }
 
-    draw(context) {
+    draw(context, drawSensors=false) {
         // context.save();
         // context.translate(this.x, this.y);
         // context.rotate(-this.angle);
@@ -34,6 +34,7 @@ class Car {
         // context.restore();
 
         context.fillStyle = this.crash ? "orange" : "black";
+        if(!this.isControllable) context.fillStyle = "pink";
         context.beginPath();
         context.moveTo(this.vertices[0].x, this.vertices[0].y);
         for(let i=1; i<this.vertices.length; i++) {
@@ -41,7 +42,7 @@ class Car {
         }
         context.fill();
 
-        if(this.isControllable) {
+        if(this.isControllable && drawSensors) {
             this.detector.drawSensors(context);
         }
     }
@@ -59,7 +60,7 @@ class Car {
                 el => el==null ? 0 : 1-el.offset
             );
             const outputs = NeuralNetwork.feedForward(offsets, this.network);
-            console.log(outputs);
+            // console.log(outputs);
 
             this.controls.forward = outputs[0];
             this.controls.left = outputs[1];
@@ -112,9 +113,9 @@ class Car {
         else if(this.controls.backward)
             this.speed -= this.acceleration;
         if(this.controls.left)
-            this.angle += 0.02;
+            this.angle += 0.01;
         else if(this.controls.right)
-            this.angle -= 0.02;
+            this.angle -= 0.01;
     
 
         if(Math.abs(this.speed)>=this.maxspeed) {

@@ -5,31 +5,69 @@ const carCtx = carCanvas.getContext("2d");
 const visualizerCanvas = document.getElementById("canvas-visualizer");
 const visualizerCtx = visualizerCanvas.getContext("2d");
 
-const mainCar = new Car(getLaneCoord(2), 600, 30, 50, true, 1.5);
 const roadBorders = [
     [{x:0, y:-100000}, {x:0, y:100000}],
     [{x:carCanvas.width, y:-100000}, {x:carCanvas.width, y:100000}]
 ];
 const otherCars = [
-    new Car(getLaneCoord(2), 100, 30, 50, false)
+    new Car(getLaneCoord(2), 120, 30, 50, false),
+    new Car(getLaneCoord(1), 0, 30, 50, false),
+    new Car(getLaneCoord(3), 0, 30, 50, false),
+    new Car(getLaneCoord(2), -170, 30, 50, false),
+    new Car(getLaneCoord(3), -170, 30, 50, false)
 ]
 
-const animation = () => {
+const cars = [];
+const no_of_maincars = 100;
+
+const generateMainCars = () => {
+    for(let i=0; i<no_of_maincars; i++) 
+        cars.push(new Car(getLaneCoord(2), 600, 30, 50, true, 3.5))
+}
+
+generateMainCars();
+let most_fit_car = cars[0];
+if(localStorage.getItem("fitCar")) {
+    for(let i=0; i<cars.length; i++) {
+        cars[i].network=JSON.parse(
+            localStorage.getItem("fitCar"));
+        if(i!=0){
+            NeuralNetwork.mutate(cars[i].network,0.2);
+        }
+    }
+}
+
+function animation (time) {
     for(let i=0; i<otherCars.length; i++) {
         otherCars[i].update(roadBorders, []);
     }
-    mainCar.update(roadBorders, otherCars);
+    cars.forEach((car) => car.update(roadBorders, otherCars));
+
+    // find the most fit car
+    let miny = cars[0].y;
+    cars.forEach(car => miny = Math.min(miny, car.y));
+    for(let i=0; i<cars.length; i++) {
+        if(cars[i].y==miny) {
+            most_fit_car = cars[i];
+            break;
+        }
+    }
+
     carCanvas.height = carCanvas.height; // to clear the canvas
     visualizerCanvas.height = window.innerHeight;
+
     carCtx.save();
-    carCtx.translate(0, -mainCar.y+carCanvas.height*0.8);
+    carCtx.translate(0, -most_fit_car.y+carCanvas.height*0.8);
     drawRoad();
-    mainCar.draw(carCtx);
+    carCtx.globalAlpha = 0.3;
+    cars.forEach((car) => car.draw(carCtx))
+    carCtx.globalAlpha = 1;
+    most_fit_car.draw(carCtx, true);
     for(let i=0; i<otherCars.length; i++) {
         otherCars[i].draw(carCtx);
     }
     carCtx.restore();
-    Visualizer.drawNetwork(visualizerCtx, mainCar.network)
+    Visualizer.drawNetwork(visualizerCtx, most_fit_car.network)
     requestAnimationFrame(animation);
 }
 
@@ -75,4 +113,10 @@ function drawRoad() {
 function getLaneCoord(laneNumber) {
     laneWidth = carCanvas.width/3;
     return (laneNumber-1)*laneWidth + laneWidth/2;
+}
+
+const button = document.getElementById("save");
+
+function save() {
+    localStorage.setItem("fitCar", JSON.stringify(most_fit_car.network));
 }
