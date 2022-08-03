@@ -18,7 +18,7 @@ const otherCars = [
 ]
 
 const cars = [];
-const no_of_maincars = 100;
+const no_of_maincars = 1;
 
 const generateMainCars = () => {
     for(let i=0; i<no_of_maincars; i++) 
@@ -119,4 +119,8 @@ const button = document.getElementById("save");
 
 function save() {
     localStorage.setItem("fitCar", JSON.stringify(most_fit_car.network));
+}
+
+function remove() {
+    localStorage.removeItem("fitCar");
 }

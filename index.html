@@ -9,9 +9,12 @@
 </head>
 <body>
     <div class="container">
+        <div class="buttons">
+            <button id="save" onclick="save()">Click to save network</button>
+            <button id="delete" onclick="remove()">Click to delete from LS</button>
+        </div>
         <canvas id="canvas-car"></canvas>
         <canvas id="canvas-visualizer"></canvas>
-        <button id="save" onclick="save()">s</button>
     </div>
     <script src="NetworkVisualizer.js"></script>
     <script src="NeuralNetwork.js"></script>

@@ -3,7 +3,7 @@ class Detector {
         this.car = car;
         this.ray = {
             count: 5,
-            spread: Math.PI/2,
+            spread: Math.PI/3,
             length: 250
         };
         this.rays = [];
