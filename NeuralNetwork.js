@@ -6,6 +6,7 @@ class NeuralNetwork {
         }
     }
 
+    // the general feed forward algo for the whole network. References the internal ff algo
     static feedForward(inputs, network) {
         let outputs = Layer.feedForward(
             inputs, network.layers[0]
@@ -16,6 +17,7 @@ class NeuralNetwork {
         return outputs;
     }
 
+    // mutates the weights and the biases based on a specified amount
     static mutate(network,amount){
         network.layers.forEach(level => {
             for(let i=0;i<level.biases.length;i++){
@@ -53,6 +55,7 @@ class Layer {
         Layer.#generateRandom(this);
     }
 
+    // used to initialize the network layer
     static #generateRandom(layer) {
         for(let i=0; i<layer.inputs.length; i++) {
             for(let j=0; j<layer.outputs.length; j++) {
@@ -64,6 +67,8 @@ class Layer {
             layer.biases[i] = Math.random()*2 -1;    
         }
     }
+
+    // the main feedforward algorithm. Uses simple linear regression based approach
     static feedForward(inputs, layer) {
         // copy the inputs
         for(let i=0; i<layer.inputs.length; i++) {

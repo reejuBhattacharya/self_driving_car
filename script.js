@@ -1,7 +1,7 @@
+// declare canvas variables
 const carCanvas = document.getElementById("canvas-car");
 carCanvas.height = window.innerHeight;
 const carCtx = carCanvas.getContext("2d");
-
 const visualizerCanvas = document.getElementById("canvas-visualizer");
 const visualizerCtx = visualizerCanvas.getContext("2d");
 
@@ -9,22 +9,29 @@ const roadBorders = [
     [{x:0, y:-100000}, {x:0, y:100000}],
     [{x:carCanvas.width, y:-100000}, {x:carCanvas.width, y:100000}]
 ];
+
+// add all secondary cars here
 const otherCars = [
     new Car(getLaneCoord(2), 120, 30, 50, false),
     new Car(getLaneCoord(1), 0, 30, 50, false),
     new Car(getLaneCoord(3), 0, 30, 50, false),
     new Car(getLaneCoord(2), -170, 30, 50, false),
-    new Car(getLaneCoord(3), -170, 30, 50, false)
+    new Car(getLaneCoord(3), -170, 30, 50, false),
+    new Car(getLaneCoord(1), -400, 30, 50, false),
+    new Car(getLaneCoord(2), -500, 30, 50, false),
+    new Car(getLaneCoord(3), -600, 30, 50, false),
 ]
 
 const cars = [];
-const no_of_maincars = 1;
+const no_of_maincars = 1; // no of cars for training. Keep 1 when done testing
 
+// generate ai controlled cars according to the number specified.
 const generateMainCars = () => {
     for(let i=0; i<no_of_maincars; i++) 
         cars.push(new Car(getLaneCoord(2), 600, 30, 50, true, 3.5))
 }
 
+// takes the best car stored, and slightly mutates all but one of them 
 generateMainCars();
 let most_fit_car = cars[0];
 if(localStorage.getItem("fitCar")) {
@@ -37,11 +44,10 @@ if(localStorage.getItem("fitCar")) {
     }
 }
 
-function animation (time) {
-    for(let i=0; i<otherCars.length; i++) {
-        otherCars[i].update(roadBorders, []);
-    }
-    cars.forEach((car) => car.update(roadBorders, otherCars));
+function animation () {
+
+    otherCars.forEach(car => car.update(roadBorders, []));
+    cars.forEach(car => car.update(roadBorders, otherCars));
 
     // find the most fit car
     let miny = cars[0].y;
@@ -54,19 +60,21 @@ function animation (time) {
     }
 
     carCanvas.height = carCanvas.height; // to clear the canvas
-    visualizerCanvas.height = window.innerHeight;
+    visualizerCanvas.height = window.innerHeight; // to clear the canvas
 
     carCtx.save();
     carCtx.translate(0, -most_fit_car.y+carCanvas.height*0.8);
     drawRoad();
-    carCtx.globalAlpha = 0.3;
+
+    carCtx.globalAlpha = 0.3; // this makes all the training cars with lower alpha
     cars.forEach((car) => car.draw(carCtx))
-    carCtx.globalAlpha = 1;
-    most_fit_car.draw(carCtx, true);
-    for(let i=0; i<otherCars.length; i++) {
-        otherCars[i].draw(carCtx);
-    }
+    carCtx.globalAlpha = 1; // reset alpha for other parameters
+    most_fit_car.draw(carCtx, true); 
+
+    otherCars.forEach(car => car.draw(carCtx));
+
     carCtx.restore();
+
     Visualizer.drawNetwork(visualizerCtx, most_fit_car.network)
     requestAnimationFrame(animation);
 }
@@ -114,8 +122,6 @@ function getLaneCoord(laneNumber) {
     laneWidth = carCanvas.width/3;
     return (laneNumber-1)*laneWidth + laneWidth/2;
 }
-
-const button = document.getElementById("save");
 
 function save() {
     localStorage.setItem("fitCar", JSON.stringify(most_fit_car.network));

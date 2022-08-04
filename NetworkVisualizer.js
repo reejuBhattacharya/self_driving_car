@@ -54,10 +54,6 @@ class Visualizer{
         const nodeRadius=18;
         for(let i=0;i<inputs.length;i++){
             const x=Visualizer.#getNodeX(inputs,i,left,right);
-            // ctx.beginPath();
-            // ctx.arc(x,bottom,nodeRadius,0,Math.PI*2);
-            // ctx.fillStyle="black";
-            // ctx.fill();
             ctx.beginPath();
             ctx.arc(x,bottom,nodeRadius*0.6,0,Math.PI*2);
             ctx.fillStyle=getRGBA(inputs[i]);
@@ -66,10 +62,7 @@ class Visualizer{
         
         for(let i=0;i<outputs.length;i++){
             const x=Visualizer.#getNodeX(outputs,i,left,right);
-            ctx.beginPath();
-            // ctx.arc(x,top,nodeRadius,0,Math.PI*2);
-            // ctx.fillStyle="black";
-            // ctx.fill();
+
             ctx.beginPath();
             ctx.arc(x,top,nodeRadius*0.6,0,Math.PI*2);
             ctx.fillStyle=getRGBA(outputs[i]);
@@ -86,7 +79,6 @@ class Visualizer{
                 ctx.textAlign="center";
                 ctx.textBaseline="middle";
                 ctx.fillStyle="rgba(255,0,0,1)";
-                // ctx.strokeStyle="white";
                 ctx.font=(nodeRadius*1.2)+"px bold Arial";
                 ctx.fillText(outputLabels[i],x,top+nodeRadius*0.1);
                 ctx.lineWidth=0.5;

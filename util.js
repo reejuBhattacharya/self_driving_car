@@ -2,6 +2,8 @@ function lerp(a, b, x) {
     return a + (b-a)*x;
 }
 
+// gets the intersection points between two lines, and also the distance of intersection 
+// from line beginning 
 function getIntersection(a, b, c, d) {
     const tNumer=(d.x-c.x)*(a.y-c.y)-(d.y-c.y)*(a.x-c.x);
     const uNumer=(c.y-a.y)*(a.x-b.x)-(c.x-a.x)*(a.y-b.y);

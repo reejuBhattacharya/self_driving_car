@@ -37,6 +37,7 @@ class Detector {
                 end = this.intersectionPoints[i];
             }
 
+            // draw the red line upto the intersection point
             context.beginPath();
             context.strokeStyle = "red";
             context.setLineDash([]);
@@ -45,6 +46,7 @@ class Detector {
             context.lineTo(end.x, end.y);
             context.stroke();
 
+            // draw the black line from the intersection point to the end
             context.beginPath();
             context.strokeStyle = "black";
             context.lineWidth = 1;

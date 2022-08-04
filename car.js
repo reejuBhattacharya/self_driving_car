@@ -35,6 +35,8 @@ class Car {
 
         context.fillStyle = this.crash ? "orange" : "black";
         if(!this.isControllable) context.fillStyle = "pink";
+
+        // draw the car
         context.beginPath();
         context.moveTo(this.vertices[0].x, this.vertices[0].y);
         for(let i=1; i<this.vertices.length; i++) {
@@ -42,6 +44,7 @@ class Car {
         }
         context.fill();
 
+        // for only drawing sensors on the best car
         if(this.isControllable && drawSensors) {
             this.detector.drawSensors(context);
         }
@@ -56,6 +59,7 @@ class Car {
 
         if(this.isControllable) {
             this.detector.updateSensors(roadBorders, otherCars);
+            // passess the inputs based on how close the obstacles are to the car
             const offsets = this.detector.intersectionPoints.map(
                 el => el==null ? 0 : 1-el.offset
             );
