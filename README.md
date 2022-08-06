@@ -6,4 +6,5 @@
   - Training neural network against all scenarios
 
 
-![image](https://user-images.githubusercontent.com/40564575/181839983-f7dc31f5-9e62-4393-9883-ad34b44bcda0.png)
+![image](https://user-images.githubusercontent.com/40564575/183239653-abd42539-977c-4385-973b-e46f164858e9.png)
+
