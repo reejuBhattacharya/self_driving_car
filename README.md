@@ -8,3 +8,7 @@
 
 ![image](https://user-images.githubusercontent.com/40564575/183239653-abd42539-977c-4385-973b-e46f164858e9.png)
 
+## Detailed feature description : 
+  - ### Car Physics
+    - The car operates like a video game car, with 4-directional motion using arrow keys. 
+
