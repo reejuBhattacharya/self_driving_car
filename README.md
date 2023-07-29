@@ -5,10 +5,12 @@
   - Modifying road width and lanes
   - Training neural network against all scenarios
 
-
-![image](https://user-images.githubusercontent.com/40564575/183239653-abd42539-977c-4385-973b-e46f164858e9.png)
+<img src="self-driving-car.gif" alt="drawing" width="900"/>
 
 ## Detailed feature description : 
   - ### Car Physics
-    - The car operates like a video game car, with 4-directional motion using arrow keys. 
+    - The car operates like a video game car, with 4-directional motion using arrow keys.
+    - It has a 2 layer neural network completely implemented from scratch using Javascript.
+    - Has functionality to store the best network configuration.
+  
 
