@@ -5,7 +5,8 @@
   - Modifying road width and lanes
   - Training neural network against all scenarios
 
-<img src="self-driving-car.gif" alt="drawing" width="900"/>
+<img width="1354" alt="image" src="https://github.com/reejuBhattacharya/self_driving_car/assets/40564575/b4bd737c-387e-420c-9f04-e7f5ace87b90">
+
 
 ## Detailed feature description : 
   - ### Car Physics
