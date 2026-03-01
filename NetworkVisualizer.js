@@ -32,57 +32,82 @@ class Visualizer{
         const right=left+width;
         const bottom=top+height;
 
-        const {inputs,outputs,biases,weights}=layer;
+        const { inputs, outputs, biases, weights } = layer;
 
-        for(let i=0;i<inputs.length;i++){
-            for(let j=0;j<outputs.length;j++){
+        // Draw connections first, so they appear underneath the nodes
+        for (let i = 0; i < inputs.length; i++) {
+            for (let j = 0; j < outputs.length; j++) {
                 ctx.beginPath();
                 ctx.moveTo(
-                    Visualizer.#getNodeX(inputs,i,left,right),
+                    Visualizer.#getNodeX(inputs, i, left, right),
                     bottom
                 );
                 ctx.lineTo(
-                    Visualizer.#getNodeX(outputs,j,left,right),
+                    Visualizer.#getNodeX(outputs, j, left, right),
                     top
                 );
-                ctx.lineWidth=2;
-                ctx.strokeStyle=getRGBA(weights[i][j]);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = getRGBA(weights[i][j]);
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = ctx.strokeStyle;
                 ctx.stroke();
             }
         }
+        ctx.shadowBlur = 0;
 
-        const nodeRadius=18;
-        for(let i=0;i<inputs.length;i++){
-            const x=Visualizer.#getNodeX(inputs,i,left,right);
+        const nodeRadius = 18;
+        // Draw input nodes
+        for (let i = 0; i < inputs.length; i++) {
+            const x = Visualizer.#getNodeX(inputs, i, left, right);
+            // Add a black background to make the node pop
             ctx.beginPath();
-            ctx.arc(x,bottom,nodeRadius*0.6,0,Math.PI*2);
-            ctx.fillStyle=getRGBA(inputs[i]);
+            ctx.arc(x, bottom, nodeRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "black";
             ctx.fill();
+            // Draw the activation value
+            ctx.beginPath();
+            ctx.arc(x, bottom, nodeRadius * 0.6, 0, Math.PI * 2);
+            ctx.fillStyle = getRGBA(inputs[i]);
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.fill();
+            ctx.shadowBlur = 0;
         }
         
-        for(let i=0;i<outputs.length;i++){
-            const x=Visualizer.#getNodeX(outputs,i,left,right);
-
+        // Draw output nodes
+        for (let i = 0; i < outputs.length; i++) {
+            const x = Visualizer.#getNodeX(outputs, i, left, right);
+            // Add a black background
             ctx.beginPath();
-            ctx.arc(x,top,nodeRadius*0.6,0,Math.PI*2);
-            ctx.fillStyle=getRGBA(outputs[i]);
+            ctx.arc(x, top, nodeRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "black";
             ctx.fill();
-
+            // Draw the activation value
             ctx.beginPath();
-            ctx.lineWidth=2;
-            ctx.arc(x,top,nodeRadius*0.8,0,Math.PI*2);
-            ctx.strokeStyle=getRGBA(biases[i]);
+            ctx.arc(x, top, nodeRadius * 0.6, 0, Math.PI * 2);
+            ctx.fillStyle = getRGBA(outputs[i]);
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Draw the bias ring
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.arc(x, top, nodeRadius * 0.8, 0, Math.PI * 2);
+            ctx.strokeStyle = getRGBA(biases[i]);
             ctx.stroke();
 
-            if(outputLabels[i]){
+            if (outputLabels[i]) {
                 ctx.beginPath();
-                ctx.textAlign="center";
-                ctx.textBaseline="middle";
-                ctx.fillStyle="rgba(255,0,0,1)";
-                ctx.font=(nodeRadius*1.2)+"px bold Arial";
-                ctx.fillText(outputLabels[i],x,top+nodeRadius*0.1);
-                ctx.lineWidth=0.5;
-                ctx.strokeText(outputLabels[i],x,top+nodeRadius*0.1);
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "white";
+                ctx.strokeStyle = "black";
+                ctx.font = (nodeRadius * 1.2) + "px bold Arial";
+                ctx.lineWidth = 1;
+                ctx.strokeText(outputLabels[i], x, top + nodeRadius * 0.1);
+                ctx.fillText(outputLabels[i], x, top + nodeRadius * 0.1);
             }
         }
     }

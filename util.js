@@ -35,10 +35,13 @@ function doesIntersect(shape1, shape2) {
     return false;
 }
 
-function getRGBA(value){
-    const alpha=Math.abs(value);
-    const R=value<0?0:255;
-    const G=R;
-    const B=value>0?0:255;
-    return "rgba("+R+","+G+","+B+","+alpha+")";
+function getRGBA(value) {
+    const alpha = Math.abs(value);
+    // Use a warm orange/gold for positive values
+    if (value > 0) {
+        return "rgba(255, 165, 0, " + alpha + ")";
+    }
+    // Use a cool blue for negative values
+    // For 0, this will be transparent, which is fine.
+    return "rgba(0, 102, 204, " + alpha + ")";
 }

@@ -48,3 +48,97 @@ html, body {
     display: flex;
     flex-direction: column;
 }
+
+.stats-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.training-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+}
+
+.training-controls button {
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+#pause-resume {
+    background-color: rgb(251, 193, 58);
+    color: #333;
+}
+
+#pause-resume.running {
+    background-color: rgb(251, 193, 58);
+}
+
+#pause-resume.paused {
+    background-color: rgb(58, 251, 109);
+    color: #333;
+}
+
+#reset-gen {
+    background-color: rgb(100, 149, 237);
+    color: white;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.speed-control span {
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.speed-btn {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.speed-btn.active {
+    background-color: rgb(58, 180, 251);
+    color: white;
+}
+
+.mutation-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mutation-control label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+#mutation-slider {
+    width: 100%;
+    cursor: pointer;
+}
+
+#dashboard {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-family: sans-serif;
+    border-radius: 5px;
+    pointer-events: none; /* Ensures mouse clicks pass through to the canvas */
+}
